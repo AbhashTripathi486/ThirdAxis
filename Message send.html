@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Email Message Sender</title>
+  <style>
+    body {
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f4f4f4;
+    }
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>Contact Us</h3>
+    <form id="contact-form">
+      <input type="text" name="from_name" placeholder="Your Name" required />
+      <input type="email" name="reply_to" placeholder="Your Email" required />
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <p id="status"></p>
+  </div>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("6QCwlF1JqiUTs-8e9"); // Replace with your public key
+    })();
+
+    document.getElementById("contact-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      emailjs.sendForm("Thirdaxis ", "template_q7arfih", this)
+        .then(() => {
+          document.getElementById("status").innerText = "Message sent successfully!";
+          this.reset();
+        }, (error) => {
+          document.getElementById("status").innerText = "Failed to send. Try again.";
+        });
+    });
+  </script>
+</body>
+</html>

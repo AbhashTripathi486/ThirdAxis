@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Work | ThirdAxis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --secondary: #00CEFF;
+            --dark: #2D3436;
+            --light: #F5F6FA;
+            --accent: #FD79A8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        nav.scrolled {
+            padding: 1rem 5%;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            padding: 0.7rem 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        }
+        
+        /* Portfolio Hero */
+        .portfolio-hero {
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 10%;
+            margin-top: 80px;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.1), rgba(0, 206, 255, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .portfolio-hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .portfolio-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--dark);
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 15s infinite linear;
+        }
+        
+        /* Portfolio Section */
+        .portfolio-section {
+            padding: 6rem 10%;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-button {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            color: var(--dark);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-button:hover, .filter-button.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .portfolio-item {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            background: white;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .portfolio-image {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-info {
+            color: white;
+        }
+        
+        .portfolio-info h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .portfolio-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .portfolio-details {
+            padding: 1.5rem;
+        }
+        
+        .portfolio-details h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .portfolio-category {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(108, 92, 231, 0.1);
+            color: var(--primary);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .portfolio-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            color: var(--dark);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 6rem 10%;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.05), rgba(0, 206, 255, 0.05));
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .author-info h4 {
+            color: var(--primary);
+        }
+        
+        .author-info p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        /* Call to Action */
+        .cta-section {
+            padding: 6rem 10%;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-section p {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 10% 2rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--secondary), var(--accent));
+        }
+        
+        .footer-column p, .footer-column a {
+            margin-bottom: 1rem;
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .portfolio-hero h1 {
+                font-size: 3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .portfolio-filter {
+                gap: 0.5rem;
+            }
+            
+            .filter-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">
+            <i class="fas fa-cube logo-icon"></i>
+            <span>ThirdAxis</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <a href="message send.html " class="cta-button">Get Started</a>
+    </nav>
+
+    <!-- Portfolio Hero -->
+    <section class="portfolio-hero">
+        <div class="floating-shapes">
+            <div class="shape" style="width: 150px; height: 150px; background: var(--primary); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; top: 10%; left: 5%; animation-delay: 0s;"></div>
+            <div class="shape" style="width: 200px; height: 200px; background: var(--secondary); border-radius: 50%; bottom: 15%; right: 10%; animation-delay: 2s;"></div>
+            <div class="shape" style="width: 100px; height: 100px; background: var(--accent); border-radius: 20% 80% 20% 80% / 80% 20% 80% 20%; top: 60%; left: 20%; animation-delay: 4s;"></div>
+        </div>
+        <div>
+            <h1>Our Creative Portfolio</h1>
+            <p>Explore our collection of professional 3D models, animations, and digital assets created for clients and marketplaces.</p>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio-section">
+        <h2 class="section-title">Featured Projects</h2>
+        
+        <div class="portfolio-filter">
+            <button class="filter-button active" data-filter="all">All Work</button>
+            <button class="filter-button" data-filter="modeling">3D Models</button>
+            <button class="filter-button" data-filter="animation">Animations</button>
+            <button class="filter-button" data-filter="game">Game Assets</button>
+            <button class="filter-button" data-filter="product">Product Designs</button>
+        </div>
+        
+        <div class="portfolio-grid">
+            <!-- Portfolio Item 1 -->
+            <div class="portfolio-item" data-category="game">
+                <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?q=80&w=2232&auto=format&fit=crop');">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3>Racing Car Pack</h3>
+                            <p>Created for Drive Zone Online mobile game</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-details">
+                    <span class="portfolio-category">Game Assets</span>
+                    <h3>Racing Car Pack</h3>
+                    <p>High-poly vehicle models with customizable parts and textures</p>
+                    <div class="portfolio-stats">
+                        <span><i class="fas fa-cube"></i> 12 Models</span>
+                        <span><i class="fas fa-calendar"></i> June 2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portfolio Item 2 -->
+            <div class="portfolio-item" data-category="modeling">
+                <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=2071&auto=format&fit=crop');">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3>Furniture Collection</h3>
+                            <p>Modern interior design assets</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-details">
+                    <span class="portfolio-category">3D Models</span>
+                    <h3>Furniture Collection</h3>
+                    <p>Detailed modern furniture set with PBR materials</p>
+                    <div class="portfolio-stats">
+                        <span><i class="fas fa-cube"></i> 8 Models</span>
+                        <span><i class="fas fa-calendar"></i> May 2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portfolio Item 3 -->
+            <div class="portfolio-item" data-category="animation">
+                <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1626785774625-ddcdd5f40c9f?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3>Character Walk Cycle</h3>
+                            <p>Custom animation for indie game developer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-details">
+                    <span class="portfolio-category">Animation</span>
+                    <h3>Character Walk Cycle</h3>
+                    <p>Custom rigged character with multiple movement animations</p>
+                    <div class="portfolio-stats">
+                        <span><i class="fas fa-film"></i> 5 Animations</span>
+                        <span><i class="fas fa-calendar"></i> July 2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portfolio Item 4 -->
+            <div class="portfolio-item" data-category="product">
+                <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=2071&auto=format&fit=crop');">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3>Product Visualization</h3>
+                            <p>For local electronics manufacturer</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-details">
+                    <span class="portfolio-category">Product Design</span>
+                    <h3>Smart Device Series</h3>
+                    <p>Photorealistic product renders for marketing materials</p>
+                    <div class="portfolio-stats">
+                        <span><i class="fas fa-camera"></i> 20 Renders</span>
+                        <span><i class="fas fa-calendar"></i> April 2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portfolio Item 5 -->
+            <div class="portfolio-item" data-category="game">
+                <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3>Sci-Fi Environment</h3>
+                            <p>Modular game environment assets</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-details">
+                    <span class="portfolio-category">Game Assets</span>
+                    <h3>Sci-Fi Environment</h3>
+                    <p>Modular kit for building futuristic game levels</p>
+                    <div class="portfolio-stats">
+                        <span><i class="fas fa-cube"></i> 35 Assets</span>
+                        <span><i class="fas fa-calendar"></i> August 2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portfolio Item 6 -->
+            <div class="portfolio-item" data-category="modeling">
+                <div class="portfolio-image" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3>Architectural Visualization</h3>
+                            <p>Residential building project</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-details">
+                    <span class="portfolio-category">3D Models</span>
+                    <h3>Modern Villa</h3>
+                    <p>Detailed architectural model with interior spaces</p>
+                    <div class="portfolio-stats">
+                        <span><i class="fas fa-home"></i> Full Structure</span>
+                        <span><i class="fas fa-calendar"></i> March 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <h2 class="section-title">Client Testimonials</h2>
+        
+        <div class="testimonial-grid">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">"ThirdAxis delivered exceptional 3D models for our mobile game. The quality surpassed our expectations, especially considering their young age. Highly professional communication throughout the project."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background-image: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1987&auto=format&fit=crop');"></div>
+                    <div class="author-info">
+                        <h4>Rajesh Kumar</h4>
+                        <p>Game Developer, Drive Zone Online</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">"We've purchased multiple asset packs from ThirdAxis on CGTrader. Their attention to detail and clean topology makes their models perfect for our production pipeline. Will definitely order again."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background-image: url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=1974&auto=format&fit=crop');"></div>
+                    <div class="author-info">
+                        <h4>Priya Sharma</h4>
+                        <p>3D Artist, Animation Studio</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="testimonial-card">
+                <p class="testimonial-text">"The product renders ThirdAxis created for our marketing campaign were photorealistic and helped increase our sales by 30%. Very impressed with their skills and professionalism."</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar" style="background-image: url('https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=2070&auto=format&fit=crop');"></div>
+                    <div class="author-info">
+                        <h4>Vikram Patel</h4>
+                        <p>Marketing Director, TechGadgets</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+        <h2>Ready to Bring Your Ideas to Life?</h2>
+        <p>Whether you need custom 3D models, animations, or game assets, our young but professional team is ready to help with your project.</p>
+        <a href="contact.html" class="cta-button" style="background: white; color: var(--primary);">Get a Free Quote</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>ThirdAxis</h3>
+                <p>Young minds creating digital worlds through passion and innovation in 3D design.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-sketch"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="about.html">About Us</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-column">
+                <h3>Our Services</h3>
+                <a href="#">3D Modeling</a>
+                <a href="#">Texturing</a>
+                <a href="#">Animation</a>
+                <a href="#">Rendering</a>
+                <a href="#">Freelance Projects</a>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <p>Lucknow, India</p>
+                <p>contact@thirdaxis.com</p>
+                <p>+91 XXXXX XXXXX</p>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2024 ThirdAxis. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Portfolio filtering
+        const filterButtons = document.querySelectorAll('.filter-button');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                // Filter items
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeIn 0.5s ease';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Animate portfolio items on scroll
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.portfolio-item, .testimonial-card');
+            
+            elements.forEach((element, index) => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        // Set initial state for animated elements
+        document.querySelectorAll('.portfolio-item, .testimonial-card').forEach((element, index) => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(30px)';
+            element.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
